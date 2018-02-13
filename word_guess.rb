@@ -1,4 +1,5 @@
 require 'random-word'
+require 'colorize'
 
 class Game
   attr_reader :ran_word, :orig_letters, :dis_letters, :guess_left
@@ -20,17 +21,19 @@ class Game
 
   def display_asc_art
     art = ""
-    flower = "(@)"
+    flower = "(@)".red
     @guess_left.times do
       art += flower
     end
-    pot = """
+    stem = """
 ,\\,\\,|,/,/,
-   _\\|/_
+   _\\|/_""".green
+    pot = """
   |_____|
    |   |
    |___|
-    """
+   """.blue
+    art += stem
     art += pot
     return art
   end
@@ -63,7 +66,6 @@ class Game
     end
     return dash_string
   end
-
 end
 
 

@@ -1,12 +1,21 @@
-# require 'random-word'
+require 'random-word'
 
 class Game
-  attr_reader :hid_word, :guess_left, :orig_word
+  attr_reader :ran_word, :orig_letters, :dis_letters, :guess_left
 
   def initialize
-    @orig_word = ["z", "h", "e", "n", "g"]
-    @guess_left = @orig_word.length
-    @hid_word = ["-","-","-","-","-"]
+    @ran_word = RandomWord.nouns(not_longer_than: 10).next
+    @orig_letters = @ran_word.split(//)
+    @dis_letters = generate_dashes
+    @guess_left = @orig_letters.length
+  end
+
+  def generate_dashes
+    dash_array = []
+    @orig_letters.length.times do
+      dash_array.push("-")
+    end
+    return dash_array
   end
 
   def display_asc_art
@@ -29,11 +38,11 @@ class Game
   def match letter
     # Do letter match
     match = false
-    @orig_word.each_index do |i|
-      if letter == @orig_word[i]
-        # If there is a match, we update the @hid_word
+    @orig_letters.each_index do |i|
+      if letter == @orig_letters[i]
+        # If there is a match, we update the @dis_letters
         match = true
-        @hid_word[i] = letter
+        @dis_letters[i] = letter
       end
     end
 
@@ -49,7 +58,7 @@ class Game
   def display_word
     # Create the output string
     dash_string = ""
-    @hid_word.each do |entry|
+    @dis_letters.each do |entry|
        dash_string += entry
     end
     return dash_string
@@ -57,13 +66,14 @@ class Game
 
 end
 
-puts "Welcome to the Word Guess game." ## Add instruction ##
+
+puts "Welcome to the Word Guess game."
 new_game = Game.new
 puts new_game.display_asc_art
 puts new_game.display_word
 
 win = true
-until new_game.orig_word == new_game.hid_word
+until new_game.orig_letters == new_game.dis_letters
   if new_game.guess_left > 0
     print "Please enter your guess (one letter a time ONLY): "
     guess_letter = gets.chomp## Add user input check ##
@@ -71,12 +81,9 @@ until new_game.orig_word == new_game.hid_word
     puts new_game.display_asc_art
     puts new_game.display_word
   else
-    puts "Sorry... you lost...."
+    puts "Sorry... you lost... The word is #{new_game.ran_word}."
     exit
   end
 end
 
 puts "Congratulations, you won!"
-
-# rand_word = RandomWord.nouns(not_longer_than: 10).next
-# puts rand_word

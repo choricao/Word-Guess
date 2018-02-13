@@ -1,9 +1,12 @@
+# require 'random-word'
+
 class Game
+  attr_reader :hid_word, :guess_left, :orig_word
 
   def initialize
-    @letters = ["w", "o", "r", "d"]
-    @guess_left = 5
-    @word = ["-","-","-","-"]
+    @orig_word = ["w", "o", "r", "d", "f"]
+    @guess_left = @orig_word.length
+    @hid_word = ["-","-","-","-","-"]
   end
 
   def display_asc_art
@@ -23,32 +26,58 @@ class Game
     return art
   end
 
-  def display_letters letter
+  def match letter
     # Do letter match
     match = false
-    @letters.each do |l|
+    @orig_word.each do |l|
       if letter == l
-        # If there is a match, we update the @word
+        # If there is a match, we update the @hid_word
         match = true
-        i = @letters.index(l)
-        @word[i] = l
+        i = @orig_word.index(l)
+        @hid_word[i] = l
       end
     end
-    # If there is no match
-    @guess_left -= 1
 
+    if match
+      puts "Great job! You guessed right. There is #{letter} in this word."
+    else
+      puts "Sorry. Try again."
+      @guess_left -= 1
+    end
+
+  end
+
+  def display_word
     # Create the output string
     dash_string = ""
-    @word.each do |entry|
+    @hid_word.each do |entry|
        dash_string += entry
-     end
-
+    end
     return dash_string
   end
 
 end
 
+puts "Welcome to the Word Guess game." ## Add instruction ##
 new_game = Game.new
 puts new_game.display_asc_art
-puts new_game.display_letters("o")
-puts new_game.display_letters("d")
+puts new_game.display_word
+
+win = true
+until new_game.orig_word == new_game.hid_word
+  if new_game.guess_left > 0
+    print "Please enter your guess (one letter a time ONLY): "
+    guess_letter = gets.chomp## Add user input check ##
+    new_game.match(guess_letter)
+    puts new_game.display_asc_art
+    puts new_game.display_word
+  else
+    puts "Sorry... you lost...."
+    exit
+  end
+end
+
+puts "Congratulations, you won!"
+
+# rand_word = RandomWord.nouns(not_longer_than: 10).next
+# puts rand_word

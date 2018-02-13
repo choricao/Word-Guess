@@ -4,7 +4,7 @@ class Game
   attr_reader :hid_word, :guess_left, :orig_word
 
   def initialize
-    @orig_word = ["w", "o", "r", "d", "f"]
+    @orig_word = ["z", "h", "e", "n", "g"]
     @guess_left = @orig_word.length
     @hid_word = ["-","-","-","-","-"]
   end
@@ -29,17 +29,16 @@ class Game
   def match letter
     # Do letter match
     match = false
-    @orig_word.each do |l|
-      if letter == l
+    @orig_word.each_index do |i|
+      if letter == @orig_word[i]
         # If there is a match, we update the @hid_word
         match = true
-        i = @orig_word.index(l)
-        @hid_word[i] = l
+        @hid_word[i] = letter
       end
     end
 
     if match
-      puts "Great job! You guessed right. There is #{letter} in this word."
+      puts "Great job! You guessed right."
     else
       puts "Sorry. Try again."
       @guess_left -= 1

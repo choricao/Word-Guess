@@ -82,7 +82,7 @@ end
 
 def valid_input
   input = gets.chomp
-  until /[a-z]/.match(input) && input.size == 1
+  until /[a-zA-Z]/.match(input) && input.size == 1
     print "Please enter a valid letter: "
     input = gets.chomp
   end
@@ -99,7 +99,7 @@ win = true
 until new_game.orig_letters == new_game.dis_letters
   if new_game.guess_left > 0
     print "Please enter your guess (one letter a time ONLY): "
-    guess_letter = valid_input
+    guess_letter = valid_input.downcase
     new_game.match(guess_letter)
     puts new_game.display_asc_art
     puts new_game.display_word

@@ -68,6 +68,15 @@ class Game
   end
 end
 
+def valid_input
+  input = gets.chomp
+  until /[a-z]/.match(input) && input.size == 1
+    print "Please enter a valid letter: "
+    input = gets.chomp
+  end
+  return input
+end
+
 
 puts "Welcome to the Word Guess game."
 new_game = Game.new
@@ -78,7 +87,7 @@ win = true
 until new_game.orig_letters == new_game.dis_letters
   if new_game.guess_left > 0
     print "Please enter your guess (one letter a time ONLY): "
-    guess_letter = gets.chomp## Add user input check ##
+    guess_letter = valid_input
     new_game.match(guess_letter)
     puts new_game.display_asc_art
     puts new_game.display_word

@@ -2,13 +2,14 @@ require 'random-word'
 require 'colorize'
 
 class Game
-  attr_reader :ran_word, :orig_letters, :dis_letters, :guess_left
+  attr_reader :ran_word, :orig_letters, :dis_letters, :guess_left, :guessed_letters
 
   def initialize
     @ran_word = RandomWord.nouns(not_longer_than: 10).next
     @orig_letters = @ran_word.split(//)
     @dis_letters = generate_dashes
     @guess_left = @orig_letters.length
+    @guessed_letters = []
   end
 
   def generate_dashes
@@ -52,8 +53,19 @@ class Game
     if match
       puts "Great job! You guessed right."
     else
-      puts "Sorry. Try again."
-      @guess_left -= 1
+      if @guessed_letters.include?(letter)
+        puts "You already guessed this letter."
+      else
+        puts "Sorry. You guessed wrong."
+        @guess_left -= 1
+        @guessed_letters << letter
+      end
+
+      print "List of wrong guesses: "
+      @guessed_letters.each do |l|
+        print "#{l}  "
+      end
+      puts "\n"
     end
 
   end

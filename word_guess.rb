@@ -89,7 +89,7 @@ end
 # Helper method to validate user's input
 def valid_input
   input = gets.chomp
-  until /[a-zA-Z]/.match(input) && input.size == 1
+  until /[a-zA-Z-]/.match(input) && input.size == 1
     print "Please enter a valid letter: "
     input = gets.chomp
   end
